@@ -4,14 +4,17 @@ public class App {
 
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
-		ListaModel listaModel = new ListaModel();
+		ContatosModel contatoModel = new ContatosModel();
 		
-		listaModel.nome = "Name";
-		listaModel.endereco = "Address";
-		listaModel.telefone = "phoneNumber";
+		contatoModel.setNome("Name");
+		contatoModel.setEndereco("Address");
+		contatoModel.setEmail("name@email.com");
 		
-		ListaDAO listaDAO = new ListaDAO();
-		listaDAO.save(listaModel);
+		ContatosDAO contatoDAO = new ContatosDAO();
+		contatoDAO.save(contatoModel);
+		
+		ContatosView contatoView = new ContatosView();
+		contatoView.showContatos(contatoDAO.getContatos());
 	}
 
 }
