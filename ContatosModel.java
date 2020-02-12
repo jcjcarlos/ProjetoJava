@@ -1,6 +1,7 @@
 import java.util.Calendar;
 
 public class ContatosModel {
+	private int id;
 	private String nome;
 	private String email;
 	private String endereco;
@@ -13,6 +14,18 @@ public class ContatosModel {
 	
 	
 	
+	public int getId() {
+		return id;
+	}
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+
 	public String getNome() {
 		return nome;
 	}

@@ -42,6 +42,23 @@ public class ContatosDAO {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public void update(ContatosModel contato) {
+		try(Connection conn = ConnectionFactory.getConnection()){
+			String query = "UPDATE contatos SET nome = ?, email = ?, endereco = ?, dataNascimento = ? WHERE id = ?";
+			try(PreparedStatement pstmt = conn.prepareStatement(query)){
+				pstmt.setString(1, contato.getNome());
+				pstmt.setString(2, contato.getEmail());
+				pstmt.setString(3, contato.getEndereco());
+				pstmt.setDate(4, new Date(contato.getDataNascimento().getTimeInMillis()));
+				pstmt.setInt(5, contato.getId());
+				pstmt.execute();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public List<ContatosModel> getContatos(){
 		try(Connection conn = ConnectionFactory.getConnection()){
@@ -51,6 +68,7 @@ public class ContatosDAO {
 				ResultSet result = pstmt.executeQuery();
 				while(result.next()) {
 					ContatosModel contato = new ContatosModel();
+					contato.setId(result.getInt("id"));
 					contato.setNome(result.getString("nome"));
 					contato.setEmail(result.getString("email"));
 					contato.setEndereco(result.getString("endereco"));

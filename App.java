@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.List;
 
 public class App {
 
@@ -14,7 +15,14 @@ public class App {
 		contatoDAO.save(contatoModel);
 		
 		ContatosView contatoView = new ContatosView();
-		contatoView.showContatos(contatoDAO.getContatos());
+		List<ContatosModel> contatos = contatoDAO.getContatos();
+		contatoView.showContatos(contatos);
+		
+		ContatosModel contatoForUpdate = contatos.get(0);
+		contatoForUpdate.setNome("New Name!");
+		contatoDAO.update(contatoForUpdate);
+		
+		
 	}
 
 }
