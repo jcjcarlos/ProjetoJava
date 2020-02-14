@@ -1,3 +1,6 @@
+package dao;
+import model.ContatosModel;
+import database.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -51,7 +54,7 @@ public class ContatosDAO {
 				pstmt.setString(2, contato.getEmail());
 				pstmt.setString(3, contato.getEndereco());
 				pstmt.setDate(4, new Date(contato.getDataNascimento().getTimeInMillis()));
-				pstmt.setInt(5, contato.getId());
+				pstmt.setLong(5, contato.getId());
 				pstmt.execute();
 			}
 		} catch (SQLException e) {
@@ -68,7 +71,7 @@ public class ContatosDAO {
 				ResultSet result = pstmt.executeQuery();
 				while(result.next()) {
 					ContatosModel contato = new ContatosModel();
-					contato.setId(result.getInt("id"));
+					contato.setId(result.getLong("id"));
 					contato.setNome(result.getString("nome"));
 					contato.setEmail(result.getString("email"));
 					contato.setEndereco(result.getString("endereco"));
@@ -90,6 +93,51 @@ public class ContatosDAO {
 			e1.printStackTrace();
 			throw new RuntimeException(e1);
 
+		}
+	}
+	
+	public ContatosModel getContatoByID(int id) {
+		ContatosModel contato = null;
+		try(Connection conn = ConnectionFactory.getConnection()){
+			String query = "SELECT * FROM Contatos WHERE id = ?";
+			try(PreparedStatement pstmt = conn.prepareStatement(query)){
+				pstmt.setInt(1, id);
+				ResultSet result = pstmt.executeQuery();
+				if(result.next()) {//Há somente um registro
+					contato.setNome(result.getString("nome"));
+					contato.setId(result.getLong("id"));
+					contato.setEmail(result.getString("email"));
+					contato.setEndereco(result.getString("endereco"));
+					Calendar data = Calendar.getInstance();
+					data.setTime(result.getDate("dataNascimento"));
+					contato.setDataNascimento(data);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally{
+			//Evita rescrever o return para o try e outro para o catch
+			//Independente do caso, irá retornar o contato, seja com valor nulo ou o objeto ContatosModel
+			return contato;
+		}
+	}
+	
+	public boolean remove(long id) {
+		boolean isRemove = false;
+		try(Connection conn = ConnectionFactory.getConnection()){
+			String query = "DELETE FROM Contatos WHERE id = ?";
+			try(PreparedStatement pstmt = conn.prepareStatement(query)){
+				pstmt.setLong(1, id);
+				isRemove = pstmt.execute();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			return isRemove;
 		}
 	}
 }

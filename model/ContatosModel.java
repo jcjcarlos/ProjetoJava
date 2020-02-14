@@ -1,7 +1,9 @@
+package model;
+
 import java.util.Calendar;
 
 public class ContatosModel {
-	private int id;
+	private long id;
 	private String nome;
 	private String email;
 	private String endereco;
@@ -14,13 +16,13 @@ public class ContatosModel {
 	
 	
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
 
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -73,8 +75,8 @@ public class ContatosModel {
 	}
 
 
-
+	@Override
 	public String toString() {
-		return this.nome + " " + this.email + " " + this.endereco;
+		return "ID: " + this.id + "\nNome: " + this.nome + "\nEmail: " + this.email + "\nEndereço: " + this.endereco;
 	}
 }

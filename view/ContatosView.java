@@ -1,3 +1,5 @@
+package view;
+import model.ContatosModel;
 import java.util.List;
 import java.util.Scanner;
 
